@@ -32,4 +32,32 @@ class Node implements NodeInteface {
 
     }
 
+	@Override
+	public Integer getId()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSuburb()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalDate getDateOB()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
