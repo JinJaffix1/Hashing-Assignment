@@ -67,4 +67,5 @@ class Node implements NodeInteface
 		return str;
 	}
 
+
 }

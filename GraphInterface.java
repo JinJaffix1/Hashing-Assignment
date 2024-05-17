@@ -1,4 +1,3 @@
-
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -69,5 +68,9 @@ public interface GraphInterface {
      */
     @Override
     public String toString();
+
+    public static void main(String[] args) {
+        System.out.println("Test");
+    }
 
 }

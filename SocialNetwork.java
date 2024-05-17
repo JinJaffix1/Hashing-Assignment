@@ -1,3 +1,7 @@
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.List;
 
 /**
  * represents accounts and their relationship as a graph; 
@@ -16,6 +20,25 @@ public class SocialNetwork implements SocialNetworkInterface {
         sn = new Graph();
 
     }
+
+    public void processFile() {
+    }
+
+    public List<Node> suggestFriends(Node currentPerson) {
+        List<Node> suggestFriendList = new LinkedList<Node>();
+        return suggestFriendList;
+    }
+
+    @Override
+    public String remindBDEvents(Node currentPerson) {
+        return "";
+    }
+
+    public List<String> getMutualFriends(Node x, Node y) {
+        List<String> friendList = new LinkedList<String>();
+        return friendList;
+    }
+
 
     /**
      *
