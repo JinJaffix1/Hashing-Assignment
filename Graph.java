@@ -82,8 +82,9 @@ public class Graph implements GraphInterface {
     }
 
     public Set<Edge> getNeighbors(Node node) throws IllegalArgumentException {
-        //Set<Edge> neighboursSet = new HashSet<Edge>();
-        //neighborsSet.add((node.adj.()));
+        if (!nodeList.containsKey(node.getId())) {
+            throw new IllegalArgumentException("Node does not exist.");
+        }
         return new HashSet<Edge>(node.adj.values());
     }
 

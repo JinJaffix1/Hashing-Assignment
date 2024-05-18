@@ -97,6 +97,8 @@ public class HarnessClass {
             // add more nodes to make your testing better
             v0 = g.addNode(0, "V0", LocalDate.parse("2010-10-30"), "A");
             v1 = g.addNode(1, "V1", LocalDate.parse("2010-10-30"), "B");
+            v2 = g.addNode(2, "V2", LocalDate.parse("2010-10-30"), "C");
+            v3 = g.addNode(3, "V3", LocalDate.parse("2010-10-30"), "D");
             System.out.print(g.nodeList.size() + "\t");
 
         } catch (Exception e) {
@@ -106,6 +108,8 @@ public class HarnessClass {
         // then edges between them
         try {
             g.addEdge(v0, v1);
+            g.addEdge(v1, v2);
+            g.addEdge(v0, v3);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
