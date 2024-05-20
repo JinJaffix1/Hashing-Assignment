@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
@@ -67,28 +68,58 @@ public class Graph implements GraphInterface {
         }
     }
 
-    public void removeNode(Node node) {
-        Integer nodeId = node.getId();
+	public void removeNode(Node node)
+	{
+		Integer nodeId = node.getId();
+		
+		// Check if the Node exists
+		if (nodeList.containsKey(nodeId))
+		{
+			// Retrieve all the neighbouring nodes
+			Set<Edge> neighbors = getNeighbors(node);
 
-        for (Node i : nodeList.values()) {
-            if (i.adj.containsKey(nodeId)) {
-                removeEdge(node, i);
-                System.out.println("Node removed.");
-            } else {
-                System.out.println("Node does not exist.");
-            }
-        nodeList.remove(node);
-        }
-    }
+			// Create iterator to remove corresponding edges
+			Iterator<Edge> iterator = neighbors.iterator();
+			while (iterator.hasNext())
+			{
+				Edge edge = iterator.next();
+				Node neighborNode = edge.getFriend();
+				removeEdge(node, neighborNode);
+			}
+			//Once all neighbouring edges, remove the node
+			nodeList.remove(node);
 
-    public Set<Edge> getNeighbors(Node node) throws IllegalArgumentException {
-        if (!nodeList.containsKey(node.getId())) {
-            throw new IllegalArgumentException("Node does not exist.");
-        }
-        return new HashSet<Edge>(node.adj.values());
-    }
+			System.out.println("Node removed.");
 
+		}
+		else
+		{
+			System.out.println("Node does not exist.");
+		}
 
+	}
+	
+	public Set<Edge> getNeighbors(Node node) throws IllegalArgumentException
+	{
+		if (!nodeList.containsKey(node.getId()))
+		{
+			throw new IllegalArgumentException("Node does not exist.");
+		}
+		return new HashSet<Edge>(node.adj.values());
+	}
+	
+	@Override
+	public String toString() {
+		String s = "";
+		for(Node i: nodeList.values()) {
+			s += i.getName() + ": --> ";
+			for(Edge e: getNeighbors(i)) {
+				s += e.getFriend().getName() + "\t";
+			}
+			s+="\n";
+		}
+		return s;		
+	}
 
     /**
      * Test main that creates a graph,
