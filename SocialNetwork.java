@@ -26,6 +26,13 @@ public class SocialNetwork implements SocialNetworkInterface {
 
     public List<Node> suggestFriends(Node currentPerson) {
         List<Node> suggestFriendList = new LinkedList<Node>();
+        for (Edge e : sn.getNeighbors(currentPerson)) {
+            for (Edge d : sn.getNeighbors(e.getFriend()) ){
+                if (d.getFriend().getSuburb() == currentPerson.getSuburb()) {
+                    suggestFriendList.add(d.getFriend());
+                }
+            }
+        }
         return suggestFriendList;
     }
 
