@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.HashMap;
 
 /**
@@ -10,13 +11,13 @@ import java.util.HashMap;
 class Node implements NodeInteface
 {
 
-	// id
+	// Initializing ID
 	private Integer id;
 	
-	// person name
+	// Initializing node (person's) name
 	private String name;
 
-	// date of birth
+	// Initalizing date of birth
 	private LocalDate dateOB;
 	
 	// suburb a person lives at
@@ -25,10 +26,12 @@ class Node implements NodeInteface
 	// contains a list of all friends of a person object
 	protected HashMap<Integer, Edge> adj;
 
-	/**
-	 * Construct a new vertex in the graph with the supplied id, name, DOB and suburb.
-	 */
-	public Node(Integer id, String name, LocalDate dob, String suburb)
+    /**
+     * Construct a new vertex in the graph with the supplied id, name, DOB and suburb.
+     */
+
+
+    public Node(Integer id, String name, LocalDate dob, String suburb)
 	{
 		this.id = id;
 		this.name = name;

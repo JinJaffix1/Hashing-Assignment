@@ -21,48 +21,61 @@ public class Graph implements GraphInterface {
      */
     protected HashMap<Integer, Node> nodeList = new HashMap<>();
 
+    // Method to add a node to the graph
     public Node addNode(Integer id, String name, LocalDate dob, String suburb) throws IllegalArgumentException {
+        // Create a new node, newNode
         Node newNode = new Node(id, name, dob, suburb);
-
+        // If the nodeList contains given node ID, throw an exception
         if (nodeList.containsKey(id)) {
             throw new IllegalArgumentException("Node already exists");
         } else {
+            // Otherwise, add the node to the nodeList
             nodeList.put(id, newNode);
         }
         return newNode;
     }
 
+    // Method to add an edge between two given nodes
     public void addEdge(Node from, Node to) throws IllegalArgumentException {
+        // If the "Node from" and "Node to" already exists, throw an exception
         if (from.adj.containsKey(to.getId()) && to.adj.containsKey(from.getId())) {
             throw new IllegalArgumentException("Edge already exists.");
         }
+        // If the "Node from" does not exist but "Node to" does exist, add the "Node from" to adj list as an Edge
         else if (!from.adj.containsKey(to.getId()) && to.adj.containsKey(from.getId())) {
             from.adj.put(to.getId(), new Edge(to));
             System.out.println("Edge added to node: " + from);
         }
+        // If the "Node from" exists but "Node to" does not exist, add the "Node to" to adj list as an Edge
         else if (from.adj.containsKey(to.getId()) && !to.adj.containsKey(from.getId())) {
             to.adj.put(from.getId(), new Edge(to));
             System.out.println("Edge added to node: " + to);
+        // Otherwise, if "Node from" and "Node to" does not exist, add both "from" and "to" to adj list as Edges
         } else {
-            from.adj.put(to.getId(), new Edge(to));
-            to.adj.put(from.getId(), new Edge(from));
+            from.adj.put(to.getId(), new Edge(to)); // add "Node to" to adj list of "Node from"
+            to.adj.put(from.getId(), new Edge(from)); // "Node from" to adj list of "Node to"
             System.out.println("Edge successfully added.");
         }
     }
 
+    // Method to remove an edge between two given nodes
     public void removeEdge(Node from, Node to) {
-        if (from.adj.containsKey(to.getId()) && to.adj.containsKey(from.getId())) {
-            from.adj.remove(to.getId());
-            to.adj.remove(from.getId());
+        // If adj list contains "Node from" and "Node to", remove the edges between them
+        if (from.adj.containsKey(from.getId()) && to.adj.containsKey(to.getId())) {
+            from.adj.remove(from.getId());
+            to.adj.remove(to.getId());
             System.out.println("Edge successfully removed.");
         }
+        // If adj list contains "Node from" but not "Node to", remove the edge from "Node from"
         else if (from.adj.containsKey(to.getId()) && !to.adj.containsKey(from.getId())) {
-            from.adj.remove(to.getId());
+            from.adj.remove(to.getId()); // Removing "Node from"
             System.out.println("Edge removed from node: " + to);
         }
+        // If adj list contains "Node to" but not "Node from", remove the edge from "Node to"
         else if (!from.adj.containsKey(to.getId()) && to.adj.containsKey(from.getId())) {
-            to.adj.remove(from.getId());
+            to.adj.remove(from.getId()); // Removing "Node to"
             System.out.println("Edge removed from node: " + from);
+        // If adj list does not contain an edge between "Node from" and "Node to", print error message
         } else {
             System.out.println("Edge does not exist.");
         }
