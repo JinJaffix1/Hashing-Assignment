@@ -109,6 +109,7 @@ public class SocialNetwork implements SocialNetworkInterface {
      * @param y second person
      * @return a list of mutual friends between Node x and Node y
      */
+	//
     public List<String> getMutualFriends(Node x, Node y) {
         // Creating an Edge set of friends of Node x
         Set<Edge> friendsOfX = sn.getNeighbors(x); // getting all friends of Node x
