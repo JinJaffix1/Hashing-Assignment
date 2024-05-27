@@ -1,10 +1,14 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
+
 
 /**
  * represents accounts and their relationship as a graph; 
@@ -81,35 +85,42 @@ public class SocialNetwork implements SocialNetworkInterface {
     }
 
     /**
-     *
+     *<b>Returns a list of suggested friends who are in the same suburb as currentPerson and are friend's of currentPerson's friends.</b>
+     * <p></p>
+     * <p>This method takes a node, currentPerson, as an input and iterates through every edge in currentPerson's
+     * getNeighbors list. For every edge in currentPerson's getNeighbors list, the edge's friends are retrieved. If the
+     * suburb of every edge's friend is the same as currentPerson's suburb and does not have the same ID as currentPerson,
+     * the edge's friend is added to the list of suggested friends.</p>
      * @param currentPerson @Node
      * @return a list of suggested friends in the same suburb as currentPerson
      */
     public List<Node> suggestFriends(Node currentPerson)
     {
+        // Creating a list to store all suggested friends in
         List<Node> suggestFriendList = new LinkedList<Node>();
+        // Iterating through every edge in currentPerson's getNeighbors list
         for (Edge e : sn.getNeighbors(currentPerson)) {
+            // Iterate through every edge's friend in their getNeighbors list
             for (Edge d : sn.getNeighbors(e.getFriend())) {
+                // If the edge's friend's suburb is the same as currentPerson and the ID is not the same as currentPerson,
                 if (d.getFriend().getSuburb().equals(currentPerson.getSuburb()) && (d.getFriend().getId() != currentPerson.getId())) {
-                    suggestFriendList.add(d.getFriend());
+                    suggestFriendList.add(d.getFriend()); // add the edge's friend to the list of suggested friends
                 }
             }
         }
         return suggestFriendList;
     }
 
-    @Override
-    public String remindBDEvents(Node currentPerson) {
-        return "";
-    }
-
     /**
-     *
+     * <b>Returns a list of mutual friends between two nodes</b>
+     * <p></p>
+     * <p>This method takes in two nodes, x and y, and creates two sets containing all of their edges. It then iterates
+     * through each Edge set and retrieves each of the node's names before storing them in two new ArrayLists. An
+     * intersection between the two ArrayLists is found and stored in a new list as a String.</p>
      * @param x first person
      * @param y second person
      * @return a list of mutual friends between Node x and Node y
      */
-	//
     public List<String> getMutualFriends(Node x, Node y) {
         // Creating an Edge set of friends of Node x
         Set<Edge> friendsOfX = sn.getNeighbors(x); // getting all friends of Node x
@@ -137,14 +148,45 @@ public class SocialNetwork implements SocialNetworkInterface {
         return mutualFriendsList;
     }
 
-
     /**
+     * <b>Returns a list of friends' upcoming birthdays</b>
+     * <p></p>
+     * <p>Returns all friends of a given person with the amount of days and months until
+     * each friends' next birthday. It is sorted based on who is the closest to their next birthday.</p>
      *
-     *
-     * @param args
+     * @param currentPerson of type Node
+     * @return String of currentPerson's friends and period until their next birthday
      */
-    public static void main(String[] args) {
-        SocialNetwork driver = new SocialNetwork();
-        System.out.println(driver.sn);
+    @Override
+    public String remindBDEvents(Node currentPerson)
+    {
+        String upcomingBDays = currentPerson.getName() + ":-> \n";
+        // Current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Create Priorty Queue, sorted based on next birthday
+        PriorityQueue<Node> queue = new PriorityQueue<>();
+
+        // Iterate through currentPerson's friends
+        for (Edge e : sn.getNeighbors(currentPerson))
+        {
+            // Add friend to the queue
+            queue.add(e.getFriend());
+        }
+
+        // Iterate through the sorted priority queue and calualate how
+        // many days until each person's birthday, add it to the string
+        while (!queue.isEmpty())
+        {
+            Node n = queue.poll();
+            // Calcuate period until next birthday
+            Period period = Period.between(currentDate, n.getNextBirthday());
+
+            // Construct string of sorted next birthdays
+            upcomingBDays += n.getName() + " has their birthday in " + period.getMonths() + " Months, " +
+                    period.getDays() + " Days\n";
+        }
+        return upcomingBDays;
     }
+
 }
