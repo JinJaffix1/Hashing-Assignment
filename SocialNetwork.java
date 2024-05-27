@@ -98,10 +98,44 @@ public class SocialNetwork implements SocialNetworkInterface {
         return suggestFriendList;
     }
 
-    @Override
-    public String remindBDEvents(Node currentPerson) {
-        return "";
-    }
+    /**
+	 * returns all friends of a given person with the amount of days and months until 
+	 * each friends next birthday. It is sorted based on who is the closest to their next birthday.
+	 * 
+	 * @param currentPerson of type Node
+	 * @return String of currentPerson's friends and period until their next birthday
+	 */
+	@Override
+	public String remindBDEvents(Node currentPerson)
+	{
+		String upcomingBDays = currentPerson.getName() + ":-> \n";
+		// Current date
+		LocalDate currentDate = LocalDate.now();
+	
+		// Create Priorty Queue, sorted based on next birthday
+		PriorityQueue<Node> queue = new PriorityQueue<>();
+	
+		// Iterate through currentPerson's friends
+		for (Edge e : sn.getNeighbors(currentPerson))
+		{
+			// Add friend to the queue
+			queue.add(e.getFriend());
+		}
+	
+		// Iterate through the sorted priority queue and calualate how
+		// many days until each person's birthday, add it to the string
+		while (!queue.isEmpty())
+		{
+			Node n = queue.poll();
+			// Calcuate period until next birthday
+			Period period = Period.between(currentDate, n.getNextBirthday());
+	
+			// Construct string of sorted next birthdays
+			upcomingBDays += n.getName() + " has their birthday in " + period.getMonths() + " Months, " + 
+			period.getDays() + " Days\n";
+		}
+		return upcomingBDays;
+	}
 
     /**
      *
