@@ -66,4 +66,13 @@ public interface NodeInteface {
      */
     public boolean equals(Object obj);
 
+    /**
+     * Overrides the compareTo method. Compares this Node with the specified node for order based on a 
+     * Node's next birthday. Returns a negative integer, zero, or a positive integer as this 
+     * object is less than, equal to, or greater than the specified node. 
+     * @param n Node
+     * @return -1, 0 or 1 based on comparison
+     */
+	public int compareTo(Node n);
+
 }
